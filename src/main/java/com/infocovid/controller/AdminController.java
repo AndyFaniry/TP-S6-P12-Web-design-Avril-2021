@@ -24,7 +24,7 @@ import com.infocovid.model.Statistique;
 @Controller
 public class AdminController {
 
-	@GetMapping(value="admin/login")
+	@GetMapping(value="/admin/login")
 	public String index(Model model) {
 		model.addAttribute("compte", new Compte());
 		return "/admin/login";
