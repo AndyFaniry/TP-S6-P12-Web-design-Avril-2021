@@ -19,6 +19,7 @@ import com.infocovid.model.Compte;
 import com.infocovid.model.Information;
 import com.infocovid.model.Statistique;
 
+@CrossOrigin(origins="*",allowedHeaders="*")
 @Controller
 public class AdminController {
 
