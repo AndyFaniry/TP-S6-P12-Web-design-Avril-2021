@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link rel="icon" type="image/png" th:href="@{/assets/logo-infocovid.png}">
+	<title>Statistique</title>
+	<link type="text/css" th:href="@{/bootstrap/css/bootstrap.min.css}" rel="stylesheet">
+    <link type="text/css" th:href="@{/bootstrap/css/bootstrap-responsive.min.css}" rel="stylesheet">
+    <link type="text/css" th:href="@{/css/theme.css}" rel="stylesheet">
+    <link type="text/css" th:href="@{/images/icons/css/font-awesome.css}" rel="stylesheet">
+</head>
+<body>
+	<div class="navbar navbar-fixed-top" >
+            <div class="navbar-inner" style="background-color: rgb(20, 64, 95)">
+                <div class="container">
+                    <a class="btn btn-navbar" data-toggle="collapse" data-target=".navbar-inverse-collapse">
+                        <i class="icon-reorder shaded"></i></a><a class="brand" style="color: white">InfoCovid</a>
+                    <div class="nav-collapse collapse navbar-inverse-collapse">
+                        <ul class="nav pull-right" >
+                            <li class="nav-user dropdown"><a th:href="@{/admin/deconnect}" class="dropdown-toggle" data-toggle="dropdown">
+                                <img th:src="@{/images/user.png}" class="nav-avatar" style="background-color: white"/>
+                                <b class="caret"></b></a>
+                                <ul class="dropdown-menu">
+                                    <li class="divider"></li>
+                                    <li><a th:href="@{/admin/deconnect}">Logout</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                    <!-- /.nav-collapse -->
+                </div>
+            </div>
+            <!-- /navbar-inner -->
+        </div>
+	<div class="wrapper">
+       <div class="container">
+            <div class="row">
+                <div class="span3">
+                    <div class="sidebar">
+                            <ul class="widget widget-menu unstyled">
+                                <li><a th:href="@{/admin/listeInformation}"><i class="menu-icon icon-book"></i>Informations<b class="label green pull-right">
+                                    [[${session.nbInfo}]]</b> </a></li>
+                             	<li><a th:href="@{/admin/ajoutInfo}"><i class="menu-icon icon-add"></i>Ajout information</a></li>        
+                            </ul>
+                            <ul class="widget widget-menu unstyled">
+                                <li><a th:href="@{/admin/stat}"><i class="menu-icon icon-bar-chart"></i>Statistiques</a></li>
+                             	<li><a th:href="@{/admin/ajoutStat}"><i class="menu-icon icon-add"></i>Ajout statistiques</a></li>        
+                            </ul>
+                            <ul class="widget widget-menu unstyled">
+                                <li><a th:href="@{/admin/deconnect}"><i class="menu-icon icon-signout"></i>Logout </a></li>
+                            </ul>
+                     </div>
+                </div>
+                <div class="span9">
+					<div class="content">
+						<div class="module">
+							<div class="module-head">
+								<h3>Statistiques<a th:href="@{/admin/ajoutStat}" class="btn btn-success" style="float: right;">Ajouter</a></h3>
+							</div>
+							<div class="module-body">
+								<ul class="profile-tab nav nav-tabs">
+                                    <li th:each="categ : ${categ}" th:class="${categ.idCategorie==1} ? active"><a th:href="@{'#'+${categ.idCategorie}}" data-toggle="tab">[[${categ.categorie}]]</a></li>
+                                </ul>
+                            
+								<div class="profile-tab-content tab-content">
+                                    <div th:each="stati : ${state}" th:id="${stati.idCategorie}" th:class="${stati.idCategorie==1} ? 'tab-pane fade active in' : 'tab-pane fade'">   
+                                    <div class=" row-fluid">
+                                    <h3>Dérnière chiffre du : <span th:text="${stati.dates}"></span></h3>
+                                     <ul class="widget widget-usage unstyled ">
+                                        <li class="big span4">
+                                            <p>
+                                                <strong>Nouveau Cas <span class="pull-right small muted" style="font-size:20px">[[${stati.positif}]]</span></strong> 
+                                            </p>
+                                            <div class="progress tight">
+                                                <div class="bar" th:style="'width:'+ ${(stati.positif*100)/(stati.positif+stati.guerie+stati.deces)} +'%;'">
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li class="big span4">
+                                            <p>
+                                                <strong>Nombre de guéris<span class="pull-right small muted" style="font-size:20px">[[${stati.guerie}]]</span></strong> 
+                                            </p>
+                                            <div class="progress tight">
+                                                <div class="bar bar-success" th:style="'width:'+ ${(stati.guerie*100)/(stati.positif+stati.guerie+stati.deces)} +'%;'">
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li class="big span4">
+                                            <p>
+                                                <strong>Nombre de décés <span class="pull-right small muted" style="font-size:20px">[[${stati.deces}]]</span></strong>
+                                            </p>
+                                            <div class="progress tight">
+                                                <div class="bar bar-warning" th:style="'width:'+ ${(stati.deces*100)/(stati.positif+stati.guerie+stati.deces)} +'%;'">
+                                                </div>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                	</div>
+                                	<div class=" row-fluid">
+                                    <h3>Chiffre total></span></h3>
+                                     <ul class="widget widget-usage unstyled ">
+                                        <li class="big span4">
+                                            <p>
+                                                <strong>Nouveau Total Cas <span class="pull-right small muted" style="font-size:20px" th:each="tot : ${total}" th:if="${tot.idCategorie==stati.idCategorie}">[[${tot.positif}]]</span></strong> 
+                                            </p>
+                                        </li>
+                                        <li class="big span4">
+                                            <p>
+                                                <strong>Nombre Total de guéris<span class="pull-right small muted" style="font-size:20px" th:each="tot : ${total}" th:if="${tot.idCategorie==stati.idCategorie}">[[${tot.guerie}]]</span></strong> 
+                                            </p>
+                                        </li>
+                                        <li class="big span4">
+                                            <p>
+                                                <strong>Nombre Total de décés <span class="pull-right small muted" style="font-size:20px" th:each="tot : ${total}" th:if="${tot.idCategorie==stati.idCategorie}">[[${tot.deces}]]</span></strong>
+                                            </p>
+                                        </li>
+                                    </ul>
+                                	</div>
+                                	<div class="module">
+                                <div class="module-head">
+                                    <h3>
+                                        Evolution</h3>
+                                </div>
+                                <div class="module-body">
+                                    <div class="chart inline-legend grid">
+                                        <div class="graph" style="height: 500px">
+                                        	<canvas th:id="'chart'+${stati.idCategorie}"></canvas>
+                                        </div>
+                                    </div>
+                                </div>
+                            	</div>
+                                    </div>
+                                </div>     
+						</div>
+						</div>
+					</div><!--/.content-->
+				</div><!--/.span9-->
+            </div>
+      </div>
+     </div>
+	<script th:src="@{/scripts/jquery-1.9.1.min.js}" type="text/javascript"></script>
+    <script th:src="@{/scripts/jquery-ui-1.10.1.custom.min.js}" type="text/javascript"></script>
+    <script th:src="@{/bootstrap/js/bootstrap.min.js}" type="text/javascript"></script>
+    <script th:src="@{/scripts/flot/jquery.flot.js}" type="text/javascript"></script>
+    <script th:src="@{/scripts/flot/jquery.flot.resize.js}" type="text/javascript"></script>
+    <script th:src="@{/chart/Chart.min.js}" type="text/javascript" ></script>
+	<script th:src="@{/chart/utils.js}" type="text/javascript"></script>
+    <script type="text/javascript" th:inline="javascript" th:each="statii : ${state}">
+   		var id=/*[[${statii.idCategorie}]]*/;
+		var dates=[ /*[# th:each="dt : ${data}"]*/ /*[# th:if="${statii.idCategorie==dt.idCategorie}"]*/[[${dt.dates}]],/*[/]*/ /*[/]*/ ];
+		var positif=[ /*[# th:each="dt : ${data}"]*/ /*[# th:if="${statii.idCategorie==dt.idCategorie}"]*/[[${dt.positif}]],/*[/]*/ /*[/]*/ ];
+		var guerie=[ /*[# th:each="dt : ${data}"]*/ /*[# th:if="${statii.idCategorie==dt.idCategorie}"]*/[[${dt.guerie}]],/*[/]*/ /*[/]*/ ];
+    	var deces=[ /*[# th:each="dt : ${data}"]*/ /*[# th:if="${statii.idCategorie==dt.idCategorie}"]*/[[${dt.deces}]],/*[/]*/ /*[/]*/ ];
+    	var config = {
+			type: 'line',
+			data: {
+				labels: dates,
+				datasets: [{
+					label: 'Nouveau cas',
+					backgroundColor: window.chartColors.blue,
+					borderColor: window.chartColors.blue,
+					data: positif,
+					fill: false,
+				}, {
+					label: 'Guérie',
+					fill: false,
+					backgroundColor: window.chartColors.green,
+					borderColor: window.chartColors.green,
+					data: guerie,
+				}, {
+					label: 'Décés',
+					fill: false,
+					backgroundColor: window.chartColors.red,
+					borderColor: window.chartColors.red,
+					data: deces,
+				}]
+			},
+			options: {
+				responsive: true,
+				title: {
+					display: true,
+					text: 'Statistique'
+				},
+				scales: {
+					yAxes: [{
+						ticks: {
+							// the data minimum used for determining the ticks is Math.min(dataMin, suggestedMin)
+							suggestedMin: 10,
+
+							// the data maximum used for determining the ticks is Math.max(dataMax, suggestedMax)
+							suggestedMax: 50
+						}
+					}]
+				}
+			}
+		};
+			var ctx = document.getElementById('chart'+id).getContext('2d');
+			window.myLine = new Chart(ctx, config);
+    </script>
+</body>
+</html>

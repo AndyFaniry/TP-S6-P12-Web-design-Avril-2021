@@ -1,0 +1,87 @@
+<?php
+	include("../connection.php");
+	function getData()
+	{
+	    $sql="SELECT * FROM `sales_by_film_category`";
+	    $i=mysqli_query(dbconnect(),$sql) or die(mysqli_error(dbconnect()));
+	    return $i;
+	}
+	$data=getData();
+	$cat=array();
+	$chif=array();
+	$i=0;
+	while($dt=mysqli_fetch_assoc($data))
+{
+	$cat[$i]=$dt['category'];
+	$chif[$i]=$dt['total_sales'];
+	$i++;
+}	
+?>
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=Edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Pret par categorie</title>
+	<link rel="stylesheet" type="text/css" href="style.css">
+	<script src="Chart.min.js"></script>
+	<script src="utils.js"></script>
+</head>
+<body>
+	<center><h1>Nombre de film louer par categorie</h1></center>
+	<div class="content">
+		<div class="wrapper"><canvas id="chart-0"></canvas></div>
+	</div>
+
+	<script>
+		var DATA_COUNT = 16;
+		var utils = Samples.utils;
+		var categ=[<?php for($i=0;$i<count($cat);$i++){?>'<?php echo $cat[$i];?>',<?php } ?>];
+		var nb=[<?php for($j=0;$j<count($chif);$j++){?><?php echo $chif[$j];?>,<?php } ?>];
+		utils.srand(110);
+
+		function colorize(opaque, ctx) {
+			var v = ctx.dataset.data[ctx.dataIndex];
+			var c = v < -50 ? '#D60000'
+				: v < 3000 ? '#F46300'
+				: v < 4400 ? '#0358B6'
+				: '#44DE28';
+
+			return opaque ? c : utils.transparentize(c, 1 - Math.abs(v / 150));
+		}
+		function generateData() {
+			return utils.numbers({
+				count: DATA_COUNT,
+				min: 0,
+				max: 100
+			});
+		}
+		var data = {
+			labels: categ,
+			datasets: [{
+				data: nb
+			}]
+		};
+
+		var options = {
+			legend: false,
+			tooltips: false,
+			elements: {
+				rectangle: {
+					backgroundColor: colorize.bind(null, false),
+					borderColor: colorize.bind(null, true),
+					borderWidth: 2
+				}
+			}
+		};
+
+		var chart = new Chart('chart-0', {
+			type: 'bar',
+			data: data,
+			options: options
+		});
+
+	</script>
+</body>
+</html>

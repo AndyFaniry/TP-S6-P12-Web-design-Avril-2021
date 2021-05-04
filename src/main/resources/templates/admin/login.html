@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org">
+<head>
+<meta charset="ISO-8859-1">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link rel="icon" type="image/png" th:href="@{/assets/logo-infocovid.png}">
+<link th:href="@{/assets/loginadmin.css}" rel="stylesheet" type="text/css" />
+<title>Login admin</title>
+</head>
+<body style="background-color: rgb(20, 64, 95)">
+	<div class="loginAdmin">
+	  <div class="loginbox">
+	    <h1>LOGIN ADMIN</h1>
+	    <form action="#" th:action="@{/admin/login}" th:object="${compte}" method="post">
+	    <div class="textbox">
+	        <input type="text" th:field="*{nom}" placeholder="Nom" />
+	    </div>
+	    <div class="textbox">
+	        <input type="password" th:field="*{mdp}" placeholder="Mot de passe"/>
+	    </div>
+	    <input type="submit" class="btn" value="Se connecter" />
+	    <center><h3 th:if="${error != null}" th:text="${error}"></center>
+	    </form>
+	  </div>
+	</div>
+</body>
+</html>
