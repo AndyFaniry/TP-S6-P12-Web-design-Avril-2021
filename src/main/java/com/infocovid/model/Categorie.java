@@ -50,4 +50,46 @@ public class Categorie {
 		}
 		return array;
     }
+	public static ArrayList<Categorie> findCategorie(String categorie) throws Exception{
+		Connection co=new ConnectionPstg().getConnection();
+		PreparedStatement st = null;
+		ResultSet result = null;
+		ArrayList<Categorie> array = new ArrayList<Categorie>();
+		try {
+			st = co.prepareStatement("select * from categorie where categorie='"+categorie+"'");
+			result = st.executeQuery(); 
+			while(result.next()) {
+				int id=result.getInt("idcategorie");
+				String nom=result.getString("categorie");
+				Categorie c=new Categorie(id,nom);
+				array.add(c);
+			}
+		}catch(Exception e) {
+			e.getMessage();
+		}finally {
+			if(st!=null) st.close();
+		}
+		return array;
+    }
+	public static ArrayList<Categorie> findCategorieById(int idCategorie) throws Exception{
+		Connection co=new ConnectionPstg().getConnection();
+		PreparedStatement st = null;
+		ResultSet result = null;
+		ArrayList<Categorie> array = new ArrayList<Categorie>();
+		try {
+			st = co.prepareStatement("select * from categorie where idCategorie="+idCategorie);
+			result = st.executeQuery(); 
+			while(result.next()) {
+				int id=result.getInt("idcategorie");
+				String nom=result.getString("categorie");
+				Categorie c=new Categorie(id,nom);
+				array.add(c);
+			}
+		}catch(Exception e) {
+			e.getMessage();
+		}finally {
+			if(st!=null) st.close();
+		}
+		return array;
+    }
 }

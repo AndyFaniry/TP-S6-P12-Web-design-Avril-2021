@@ -5,63 +5,56 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 	<link rel="icon" type="image/png" th:href="@{/assets/logo-infocovid.png}">
-	<title>Statistique</title>
+	<title>[[${'Infocovid | '+titre}]]</title>
+	<meta name="Description" th:content="${descri}" />
+	<meta name="keywords" th:content="${motsC}">
+	<link type="text/css" th:href="@{/css/styles.css}" rel="stylesheet">
 	<link type="text/css" th:href="@{/bootstrap/css/bootstrap.min.css}" rel="stylesheet">
     <link type="text/css" th:href="@{/bootstrap/css/bootstrap-responsive.min.css}" rel="stylesheet">
+    <link type="text/css" th:href="@{/css/materialize.css}" rel="stylesheet">
+    <link type="text/css" th:href="@{/css/magnific-popup.css}" rel="stylesheet">
+    <link type="text/css" th:href="@{/css/mdb.min.css}" rel="stylesheet">
+    
+     
+    <link type="text/css" th:href="@{/css/responsive.css}" rel="stylesheet">
     <link type="text/css" th:href="@{/css/theme.css}" rel="stylesheet">
+     <link type="text/css" th:href="@{/chart/style.css}" rel="stylesheet">
     <link type="text/css" th:href="@{/images/icons/css/font-awesome.css}" rel="stylesheet">
 </head>
 <body>
-	<div class="navbar navbar-fixed-top" >
-            <div class="navbar-inner" style="background-color: rgb(20, 64, 95)">
+	<nav class="navbar navbar-fixed-top navbar-light bg-faded " style="background-color: rgb(20, 64, 95)">        
                 <div class="container">
-                    <a class="btn btn-navbar" data-toggle="collapse" data-target=".navbar-inverse-collapse">
-                        <i class="icon-reorder shaded"></i></a><a class="brand" style="color: white">InfoCovid</a>
-                    <div class="nav-collapse collapse navbar-inverse-collapse">
-                        <ul class="nav pull-right" >
-                            <li class="nav-user dropdown"><a th:href="@{/admin/deconnect}" class="dropdown-toggle" data-toggle="dropdown">
-                                <img th:src="@{/images/user.png}" class="nav-avatar" style="background-color: white"/>
-                                <b class="caret"></b></a>
-                                <ul class="dropdown-menu">
-                                    <li class="divider"></li>
-                                    <li><a th:href="@{/admin/deconnect}">Logout</a></li>
-                                </ul>
-                            </li>
-                        </ul>
-                    </div>
-                    <!-- /.nav-collapse -->
-                </div>
-            </div>
+                    <span class="navbar-nav" style="font-size: 30px">Infocovid</span> 
+                <!--Content for large and medium screens-->
+                <div class="navbar-desktop">
+                    <ul class="nav navbar-nav  hidden-md-down text-uppercase pull-right">
+                    	<li class="nav-item">
+                            <a class="nav-link" th:href="@{/les-derenieres-informations}" style="float: left">Dernières informations</a>
+                        </li>
+                        <li class="nav-item" th:each="catt:${categ}">
+                            <a class="nav-link" th:href="@{/les-derenieres-informations/{idCategorie}(idCategorie=${catt.categorie})}" style="float: left">[[${catt.categorie}]] <span class="sr-only" th:if="${catt.idCategorie==1}">(current)</span></a>
+                        </li>
+            			<li class="nav-item">
+                            <a class="nav-link" href="#home" style="float: left">Statistiques</a>
+                        </li>
+                    </ul>
+                </div> 
+                </div>      
             <!-- /navbar-inner -->
-        </div>
-	<div class="wrapper">
+    </nav>
+    <div class="wrapper">
        <div class="container">
             <div class="row">
-                <div class="span3">
-                    <div class="sidebar">
-                            <ul class="widget widget-menu unstyled">
-                                <li><a th:href="@{/admin/listeInformation}"><i class="menu-icon icon-book"></i>Informations<b class="label green pull-right">
-                                    [[${session.nbInfo}]]</b> </a></li>
-                             	<li><a th:href="@{/admin/ajoutInfo}"><i class="menu-icon icon-add"></i>Ajout information</a></li>        
-                            </ul>
-                            <ul class="widget widget-menu unstyled">
-                                <li><a th:href="@{/admin/stat}"><i class="menu-icon icon-bar-chart"></i>Statistiques</a></li>
-                             	<li><a th:href="@{/admin/ajoutStat}"><i class="menu-icon icon-add"></i>Ajout statistiques</a></li>        
-                            </ul>
-                            <ul class="widget widget-menu unstyled">
-                                <li><a th:href="@{/admin/deconnect}"><i class="menu-icon icon-signout"></i>Logout </a></li>
-                            </ul>
-                     </div>
-                </div>
-                <div class="span9">
+            <div class="col-lg-1"></div>
+            	<div class="col-lg-10">
 					<div class="content">
 						<div class="module">
 							<div class="module-head">
-								<h3>Statistiques<a th:href="@{/admin/ajoutStat}" class="btn btn-success" style="float: right;">Ajouter</a></h3>
+								<h3>Statistiques</h3>
 							</div>
 							<div class="module-body">
 								<ul class="profile-tab nav nav-tabs">
-                                    <li th:each="categ : ${categ}" th:class="${categ.idCategorie==1} ? active"><a th:href="@{'#'+${categ.idCategorie}}" data-toggle="tab">[[${categ.categorie}]]</a></li>
+                                    <li th:each="catege : ${categ}" th:class="${catege.idCategorie==1} ? active"><a th:href="@{'#'+${catege.idCategorie}}" data-toggle="tab">[[${catege.categorie}]]</a></li>
                                 </ul>
                             
 								<div class="profile-tab-content tab-content">
@@ -137,9 +130,10 @@
 						</div>
 					</div><!--/.content-->
 				</div><!--/.span9-->
+				<div class="col-lg-1"></div>
             </div>
-      </div>
-     </div>
+       </div>
+    </div>
 	<script th:src="@{/scripts/jquery-1.9.1.min.js}" type="text/javascript"></script>
     <script th:src="@{/scripts/jquery-ui-1.10.1.custom.min.js}" type="text/javascript"></script>
     <script th:src="@{/bootstrap/js/bootstrap.min.js}" type="text/javascript"></script>
@@ -147,7 +141,7 @@
     <script th:src="@{/scripts/flot/jquery.flot.resize.js}" type="text/javascript"></script>
     <script th:src="@{/chart/Chart.min.js}" type="text/javascript" ></script>
 	<script th:src="@{/chart/utils.js}" type="text/javascript"></script>
-    <script type="text/javascript" th:inline="javascript" th:each="statii : ${state}">
+	<script type="text/javascript" th:inline="javascript" th:each="statii : ${state}">
    		var id=/*[[${statii.idCategorie}]]*/;
 		var dates=[ /*[# th:each="dt : ${data}"]*/ /*[# th:if="${statii.idCategorie==dt.idCategorie}"]*/[[${dt.dates}]],/*[/]*/ /*[/]*/ ];
 		var positif=[ /*[# th:each="dt : ${data}"]*/ /*[# th:if="${statii.idCategorie==dt.idCategorie}"]*/[[${dt.positif}]],/*[/]*/ /*[/]*/ ];

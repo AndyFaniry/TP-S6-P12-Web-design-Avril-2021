@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link rel="icon" type="image/png" th:href="@{/assets/logo-infocovid.png}">
+	<title>[[${'Infocovid | '+titre}]]</title>
+	<meta name="Description" th:content="${descri}" />
+	<meta name="keywords" th:content="${motsC}">
+	<link type="text/css" th:href="@{/bootstrap/css/bootstrap.min.css}" rel="stylesheet">
+    <link type="text/css" th:href="@{/bootstrap/css/bootstrap-responsive.min.css}" rel="stylesheet">
+    <link type="text/css" th:href="@{/css/materialize.css}" rel="stylesheet">
+    <link type="text/css" th:href="@{/css/magnific-popup.css}" rel="stylesheet">
+    <link type="text/css" th:href="@{/css/mdb.min.css}" rel="stylesheet">
+    
+     <link type="text/css" th:href="@{/css/styles.css}" rel="stylesheet">
+    <link type="text/css" th:href="@{/css/responsive.css}" rel="stylesheet">
+    <link type="text/css" th:href="@{/css/theme.css}" rel="stylesheet">
+    <link type="text/css" th:href="@{/images/icons/css/font-awesome.css}" rel="stylesheet">
+</head>
+<body>
+	<nav class="navbar navbar-fixed-top navbar-light bg-faded " style="background-color: rgb(20, 64, 95)">        
+                <div class="container">
+                    <span class="navbar-nav" style="font-size: 30px">Infocovid</span> 
+                <!--Content for large and medium screens-->
+                <div class="navbar-desktop">
+                    <ul class="nav navbar-nav  hidden-md-down text-uppercase pull-right">
+                    	<li class="nav-item">
+                            <a class="nav-link" th:href="@{/les-derenieres-informations}" style="float: left">Dernières informations</a>
+                        </li>
+                        <li class="nav-item" th:each="cat:${categorie}">
+                            <a class="nav-link" th:href="@{/les-derenieres-informations/{idCategorie}(idCategorie=${cat.categorie})}" style="float: left">[[${cat.categorie}]] <span class="sr-only" th:if="${cat.idCategorie==1}">(current)</span></a>
+                        </li>
+            			<li class="nav-item">
+                            <a class="nav-link" th:href="@{/statistique}" style="float: left">Statistiques</a>
+                        </li>
+                    </ul>
+                </div> 
+                </div>      
+            <!-- /navbar-inner -->
+    </nav>
+    <div class="wrapper">
+       <div class="container wrapper">
+       		<div class="row">
+       		<div class="col-lg-1"></div>
+       			<h1 th:text="${titre}"></h1>
+       		</div>
+       		<hr size="3" color="rgb(20, 64, 95)">
+            <div class="row">
+                <div class="media stream">
+                <div class="module">
+                <div class="module-heade">
+                	<strong><h2 style="font-size: 15px" th:text="${'Publié le: '+#temporals.format(info.dates, 'dd-MM-yyyy HH:mm')}"></h2></strong>
+                </div>
+                <div class="module-body">
+                <div class="stream-list">
+										
+										<div class="media-body">
+											<div class="stream-headline">	
+												<div class="stream-text">
+													 <p><h3 style="font-size: 14px" th:utext="${info.toStrong(info.motsCle,info.information)}"></h3></p>
+                                                </div>
+												<div class="stream-attachment photo">
+													<div class="responsive-photo" >
+													<center>
+														<img th:src="${info.image}" width="400px"/>
+													</center>
+													</div>
+												</div>
+											</div><!--/.stream-headline-->
+										</div>
+									</div><!--/.media .stream-->
+			</div>
+			</div>
+			</div>
+            </div>
+            <hr size="3" color="rgb(20, 64, 95)">
+            <div class="row">
+       		<div class="col-lg-1"></div>
+       			<h2>Les articles associés:</h2>
+       		</div>
+       		<div class="row">
+       		<div class="col-lg-1"></div>
+       		 <div class="col-lg-8">
+       			<div class="row">
+                        <div class="col-lg-4 col-md-6 mb-4" th:each="asso:${assoc}">
+                            <div class="card h-100">
+                                <div class="card-body">
+                                    <h4 class="card-title"><a th:href="@{/article/{url}(url=${asso.toUrl(asso.titre)})}" th:text=${asso.titre}></a></h4>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-4 col-md-6 mb-4">
+                            <div class="card h-100">
+                                <div class="card-body">
+                                    <h4 class="card-title"><a href="https://www.lemonde.fr/afrique/article/2020/12/15/covid-19-l-etrange-strategie-sanitaire-de-madagascar_6063506_3212.html">Covid-19 : l’étrange stratégie sanitaire de Madagascar</a></h4>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-4 col-md-6 mb-4">
+                            <div class="card h-100">
+                                <div class="card-body">
+                                    <h4 class="card-title"><a href="https://www.rfi.fr/fr/afrique/20210422-covid-19-%C3%A0-madagascar-changement-de-strat%C3%A9gie-vaccinale-de-la-part-des-autorit%C3%A9s" >Covid-19 : Madagascar reconduit l'état d'urgence sanitaire pour deux semaines</a></h4>
+                                </div>
+                            </div>
+                        </div>
+                   </div>
+       		</div>
+       		</div>
+        </div>
+       </div>
+	<script th:src="@{/scripts/jquery-1.9.1.min.js}" type="text/javascript"></script>
+    <script th:src="@{/scripts/jquery-ui-1.10.1.custom.min.js}" type="text/javascript"></script>
+    <script th:src="@{/bootstrap/js/bootstrap.min.js}" type="text/javascript"></script>
+    <script th:src="@{/scripts/flot/jquery.flot.js}" type="text/javascript"></script>
+    <script th:src="@{/scripts/flot/jquery.flot.resize.js}" type="text/javascript"></script>
+    <script th:src="@{/chart/Chart.min.js}" type="text/javascript" ></script>
+	<script th:src="@{/chart/utils.js}" type="text/javascript"></script>
+</body>
+</html>

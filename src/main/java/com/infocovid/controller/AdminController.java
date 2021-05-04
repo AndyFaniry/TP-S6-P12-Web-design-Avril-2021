@@ -7,21 +7,21 @@ import javax.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.bind.annotation.CrossOrigin;
 
 import com.infocovid.model.Categorie;
 import com.infocovid.model.Compte;
 import com.infocovid.model.Information;
 import com.infocovid.model.Statistique;
 
-@CrossOrigin(origins="*",allowedHeaders="*")
 @Controller
+@CrossOrigin(origins="*",allowedHeaders="*")
 public class AdminController {
 
 	@GetMapping(value="admin/login")
@@ -78,9 +78,9 @@ public class AdminController {
 			String fileName = StringUtils.cleanPath(multipartFile.getOriginalFilename());
 			String path=Information.imagePath(fileName);
 			info.setImage(path+"/"+fileName);
-			info.insertInformation();
 			String pathe="src/main/resources/static"+path;
 			Information.saveFile(pathe, fileName, multipartFile);
+			info.insertInformation();
 			view="redirect:listeInformation";
 		} catch (Exception e) {
 			model.addAttribute("error", e.getMessage());
@@ -112,7 +112,7 @@ public class AdminController {
 			model.addAttribute("categ", Categorie.findAllCategorie());
 			model.addAttribute("type", "update");
 			model.addAttribute("info", info);
-			view="admin/formInfo";
+			view="/admin/formInfo";
 		}
 		return view;
 	}

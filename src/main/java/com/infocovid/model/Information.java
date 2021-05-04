@@ -10,6 +10,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Timestamp;
+import java.text.Normalizer;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 
@@ -108,6 +109,7 @@ public class Information {
 			e.getMessage();
 		}finally {
 			if(st!=null) st.close();
+			
 		}
 		return array;
     }
@@ -115,6 +117,11 @@ public class Information {
 		String sql="select * from information where idInformation="+id;
 		ArrayList<Information> info=Information.findAll(sql);
 		return info.get(0);
+	}
+	public static ArrayList<Information> getInformationCategorie(int id) throws Exception {
+		String sql="select * from information where idCategorie="+id+"limit 4";
+		ArrayList<Information> info=Information.findAll(sql);
+		return info;
 	}
 	public void insertInformation() throws Exception {
 		Connection co= new ConnectionPstg().getConnection();
@@ -170,7 +177,7 @@ public class Information {
 		} catch (Exception e) {
 			throw e;
 		} finally {
-			if(st != null) st.close();
+			if(st != null) st.close();co.close();
 		}
 	}
 	public static String toStrong(String mots,String text) {
@@ -211,5 +218,48 @@ public class Information {
 		String date=LocalDateTime.now().toString().split("T")[0];
 		path=path+date;
 		return path; 
+	}
+	public static String toUrl(String url) throws Exception {
+		Connection co=new ConnectionPstg().getConnection();
+		PreparedStatement st = null;
+		ResultSet result = null;
+		String val="";
+		try {
+			String sql= "select replace(unaccent(?),'''','') as car";
+			st = co.prepareStatement(sql);
+			st.setString(1, url);
+			result = st.executeQuery();
+			String ur="";
+			while(result.next()) {
+				ur=result.getString("car");
+			}
+			String[] parPoint=ur.split("\\-|\\s|(?=\\p{Punct})|(?<=\\p{Punct})");
+			 val=String.join("-", parPoint);
+		} catch (Exception e) {
+			throw e;
+		} finally {
+			if(st != null) st.close();co.close();result.close();
+		}
+		return val;
+	}
+	public static ArrayList<Information> getUrl(ArrayList<Information> info) throws Exception{
+		ArrayList<Information> inf=new ArrayList<Information>();
+		for(int i=0;i<info.size();i++) {
+			Information in=new Information();
+			in.setIdInformation(info.get(i).getIdInformation());
+			in.setIdCategorie(info.get(i).getIdCategorie());
+			in.setImage(info.get(i).getImage());
+			in.setInformation(info.get(i).getInformation());
+			in.setTitre(Information.toUrl(info.get(i).getTitre()));
+			in.dates=info.get(i).getDates();
+			inf.add(in);
+		}
+		return inf;
+	}
+	public static Information findInformationByUrl(String url) throws Exception {
+		String titre=String.join(" ",url.split("-"));
+		String sql="select * from information where replace(unaccent(titre),'''','')='"+titre+"'";
+		Information inf=Information.findAll(sql).get(0);
+		return inf;
 	}
 }
