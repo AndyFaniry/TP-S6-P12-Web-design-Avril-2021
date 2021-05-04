@@ -24,10 +24,10 @@ import com.infocovid.model.Statistique;
 @Controller
 public class AdminController {
 
-	@GetMapping(value="/admin/login")
+	@GetMapping(value="admin/login")
 	public String index(Model model) {
 		model.addAttribute("compte", new Compte());
-		return "/admin/login";
+		return "admin/login";
 	}
 	@PostMapping(value="admin/login")
 	public String login(@ModelAttribute Compte compte,Model model,HttpSession session) throws Exception{
@@ -38,7 +38,7 @@ public class AdminController {
 			view="redirect:listeInformation";
 		} catch (Exception e) {
 			model.addAttribute("error", e.getMessage());
-			view="/admin/login";
+			view="admin/login";
 		}
 		return view;
 	}
@@ -53,7 +53,7 @@ public class AdminController {
 		ArrayList<Information> info=Information.findAll("select * from information order by dates DESC");
 		session.setAttribute("nbInfo", info.size());
 		model.addAttribute("info",info);
-		return "/admin/listeInformation";
+		return "admin/listeInformation";
 	}
 	@GetMapping("admin/deleteInfo/{id}")
     public String deleteBuyer(@PathVariable String id,Model model){
@@ -69,7 +69,7 @@ public class AdminController {
 		model.addAttribute("categ", Categorie.findAllCategorie());
 		model.addAttribute("info", new Information());
 		model.addAttribute("type", "ajout");
-		return "/admin/formInfo";
+		return "admin/formInfo";
 	}
 	@PostMapping(value="admin/ajoutInfo")
 	public String ajoutInfo(@ModelAttribute Information info,Model model,@RequestParam("photo") MultipartFile multipartFile) throws Exception{
@@ -87,7 +87,7 @@ public class AdminController {
 			model.addAttribute("type", "ajout");
 			model.addAttribute("categ", Categorie.findAllCategorie());
 			model.addAttribute("info", new Information());
-			view="/admin/formInfo";
+			view="admin/formInfo";
 		}
 		return view;
 	}
@@ -97,7 +97,7 @@ public class AdminController {
 		model.addAttribute("info",info);
 		model.addAttribute("categ", Categorie.findAllCategorie());
 		model.addAttribute("type", "update");
-		return "/admin/formInfo";
+		return "admin/formInfo";
 	}
 	@PostMapping(value="admin/updateInfo/{id}")
 	public String updateInfo(@PathVariable String id,@ModelAttribute Information info,Model model) throws Exception{
@@ -112,7 +112,7 @@ public class AdminController {
 			model.addAttribute("categ", Categorie.findAllCategorie());
 			model.addAttribute("type", "update");
 			model.addAttribute("info", info);
-			view="/admin/formInfo";
+			view="admin/formInfo";
 		}
 		return view;
 	}
@@ -120,7 +120,7 @@ public class AdminController {
 	public String ajoutStat(Model model) throws Exception {
 		model.addAttribute("categ", Categorie.findAllCategorie());
 		model.addAttribute("stat", new Statistique());
-		return "/admin/formStat";
+		return "admin/formStat";
 	}
 	@PostMapping(value="admin/ajoutStat")
 	public String ajoutStat(@ModelAttribute Statistique stat,Model model) throws Exception{
@@ -132,7 +132,7 @@ public class AdminController {
 			model.addAttribute("error", e.getMessage());
 			model.addAttribute("categ", Categorie.findAllCategorie());
 			model.addAttribute("stat", new Statistique());
-			view="/admin/formStat";
+			view="admin/formStat";
 		}
 		return view;
 	}
@@ -143,6 +143,6 @@ public class AdminController {
 		model.addAttribute("data", Statistique.getDataView());
 		model.addAttribute("total", Statistique.getTotal());
 		model.addAttribute("stat", new Statistique());
-		return "/admin/stat";
+		return "admin/stat";
 	}
 }
