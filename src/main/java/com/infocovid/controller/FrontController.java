@@ -3,10 +3,15 @@ package com.infocovid.controller;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
+import java.io.StringReader;
 import java.util.ArrayList;
+
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,6 +23,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.w3c.dom.Document;
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
 
 import com.infocovid.model.Categorie;
 import com.infocovid.model.Compte;
@@ -77,11 +85,15 @@ public class FrontController {
 		model.addAttribute("stat", new Statistique());
 		return "front/stat";
 	}
-	@RequestMapping(value = "sitemap.xml", method = RequestMethod.GET, produces = { MediaType.APPLICATION_XML_VALUE })
-	@ResponseBody
-	public String sitemap() throws IOException {
-		Resource resource = new ClassPathResource("sitemap.xml");
-		Reader reader = new InputStreamReader(resource.getInputStream());
-		return FileCopyUtils.copyToString(reader);
-	}
+//	@RequestMapping(value = "sitemap.xml", method = RequestMethod.GET,  produces=MediaType.TEXT_XML_VALUE)
+//	@ResponseBody
+//	public String sitemap() throws IOException, SAXException, ParserConfigurationException {
+//		Resource resource = new ClassPathResource("sitemap.xml");
+//		Reader reader = new InputStreamReader(resource.getInputStream());
+//		String xml=FileCopyUtils.copyToString(reader);
+//		Document doc = DocumentBuilderFactory.newInstance()
+//                .newDocumentBuilder()
+//                .parse(new InputSource(new StringReader(xml)));
+//		return xml;
+//	}
 }
