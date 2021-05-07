@@ -12,6 +12,6 @@
 #Optimisation faits:
     -Suppression des css et js non utilisés de la page
     -Compression gzip des fichiers
-    -Mise en cache cote client
+    -Mise en cache coté client
     -Minimification css et js
     -Redimension des images
