@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class Sitemap {
 	
-	@RequestMapping(value = "sitemap", method = RequestMethod.GET, produces = "application/xml")
+	@RequestMapping(value = "/sitemap.xml", method = RequestMethod.GET, produces = "application/xml")
 	public ResponseEntity<InputStreamResource> sitemap() throws IOException {
 		ClassPathResource resource = new ClassPathResource("sitemap.xml");
 	    HttpHeaders headers = new HttpHeaders();
@@ -36,15 +36,15 @@ public class Sitemap {
 	            .contentType(MediaType.parseMediaType("application/octet-stream"))
 	            .body(new InputStreamResource(resource.getInputStream()));
 	}
-	@RequestMapping(value = "/sitemap.xml")
-	public void robots(HttpServletRequest request, HttpServletResponse response) {
-	    try {
-	    	Resource resource = new ClassPathResource("sitemap.xml");
-			Reader reader = new InputStreamReader(resource.getInputStream());
-			String xml=FileCopyUtils.copyToString(reader);
-	        response.getWriter().write(xml);
-	    } catch (IOException e) {
-	      System.out.println(e.getMessage());
-	    }
-	}
+//	@RequestMapping(value = "/sitemap.xml")
+//	public void robots(HttpServletRequest request, HttpServletResponse response) {
+//	    try {
+//	    	Resource resource = new ClassPathResource("sitemap.xml");
+//			Reader reader = new InputStreamReader(resource.getInputStream());
+//			String xml=FileCopyUtils.copyToString(reader);
+//	        response.getWriter().write(xml);
+//	    } catch (IOException e) {
+//	      System.out.println(e.getMessage());
+//	    }
+//	}
 }
