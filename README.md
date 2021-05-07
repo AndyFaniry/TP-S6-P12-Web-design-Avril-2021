@@ -15,3 +15,8 @@
     -Mise en cache coté client
     -Minimification css et js
     -Redimension des images
+
+#Apres optimisation du site:
+    -Note sur PageSpeed Insights:
+        sur mobile 97
+        sur ordinateur 100
